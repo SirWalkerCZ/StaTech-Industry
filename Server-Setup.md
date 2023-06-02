@@ -57,3 +57,6 @@ If you need to adjust the RAM allocated, you can edit the `-Xmx6G` to however mu
 ```
 
 If you need to change the allocated RAM, you can use a text editor of your choice and adjust the `Xmx6G` to match how much RAM you wish to allocate
+
+# Setting up Simple Voice Chat
+Included with the modpack is a mod called Simple Voice Chat. If you would like to enable it, it will require a little bit of setup. There's no point in me retyping what the developers have already documented. Go [here](https://modrepo.de/minecraft/voicechat/wiki/server_setup) and click the appropriate link if you're setting up the server yourself or using a hosting service.
