@@ -58,5 +58,70 @@ If you need to adjust the RAM allocated, you can edit the `-Xmx6G` to however mu
 
 If you need to change the allocated RAM, you can use a text editor of your choice and adjust the `Xmx6G` to match how much RAM you wish to allocate
 
+# Docker
+This guide assumes you know the basics of docker.
+
+1. Create Docker Compose File.
+
+`docker-compose.yml`
+
+```yaml
+version: '3'
+
+services:
+  cf-initcontainer:
+    image: tacomonkey/cf-initcontainer:latest
+    container_name: cf-initcontainer
+    volumes:
+      - "./downloads:/downloads"
+    environment:
+      - CF_API_KEY=${CF_API_KEY}
+      - MODPACK_ID=863689 # project id of the modpack
+      - FILE_ID=4594293 #file id of the specific modpack version
+
+  minecraft:
+    image: itzg/minecraft-server:java17-graalvm-ce
+    container_name: minecraft
+    ports:
+      - "25565:25565"
+    volumes:
+      - "./mc:/data"
+      - "./downloads:/downloads"
+    environment:
+      - EULA=TRUE
+      - MEMORY=8G
+      - TYPE=AUTO_CURSEFORGE
+      - CF_PAGE_URL=https://www.curseforge.com/minecraft/modpacks/statech-industry
+      - CF_API_KEY=${CF_API_KEY}
+      - CF_EXCLUDE_MODS=627566 704346 356643 475358 406343 393563 407206 398502 619718 365727 337243 547694 401978 541329 566140 417510 280294 313219 365615 629373 271492 459496 495267 455508 679177 325492 356461 308702 365521 363104 511319 385463 447673 394468 282313 521126 521594 547358
+    depends_on:
+      cf-initcontainer:
+        condition: service_completed_successfully
+    tty: true
+    stdin_open: true
+    restart: always
+```
+
+This `docker-compose.yml` file uses the cf-container image to download mods that disallow third-party mods. It may or may not be against the Curseforge TOS, so it is up to you if you want to use it or not.
+
+The CF_EXCLUDE_MODS variable is preset with what should be all the clientside mods. This stops the server from downloading them, thus saving bandwidth and resulting in faster installs.
+
+2. Aquire Curseforge API Key from their [Eternal Console](https://console.curseforge.com/#/api-keys).
+
+3. Make a new `.env` file with the following content:
+```
+CF_API_KEY=your API key here
+```
+
+Don't forget to add an extra `$` after each `$` in the API key else it won't work
+
+4. Start the containers
+
+```shell
+docker compose up -d
+```
+
+That's it! You can find more information at the [Docker Minecraft Server Repository](https://github.com/itzg/docker-minecraft-server).
+
 # Setting up Simple Voice Chat
 Included with the modpack is a mod called Simple Voice Chat. If you would like to enable it, it will require a little bit of setup. There's no point in me retyping what the developers have already documented. Go [here](https://modrepo.de/minecraft/voicechat/wiki/server_setup) and click the appropriate link if you're setting up the server yourself or using a hosting service.
