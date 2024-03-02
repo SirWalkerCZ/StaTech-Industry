@@ -47,7 +47,7 @@ If you need to adjust the RAM allocated, you can edit the `-Xmx6G` to however mu
 5. Download the Fabric server jar. Use the exact command as below to avoid getting the wrong version:
 
 ```
-    curl -OJ https://meta.fabricmc.net/v2/versions/loader/1.19.2/0.14.21/0.11.2/server/jar
+    curl -OJ https://meta.fabricmc.net/v2/versions/loader/1.19.2/0.14.22/0.11.2/server/jar
 ```
 
 6. Make the server start script an executable
